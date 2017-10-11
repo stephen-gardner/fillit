@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 17:14:40 by nkouris           #+#    #+#             */
-/*   Updated: 2017/10/10 22:52:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2017/10/11 13:12:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # define FALSE 0
 # define TRUE !FALSE
 # define HIGH_BIT 1 << 31
+# define FULL_BIT 0xF0000000
+# define STAGGERED_BIT 0x88880000
+
 
 typedef int	t_bool;
 
@@ -27,6 +30,7 @@ typedef int	t_bool;
 typedef	struct	s_shape
 {
 	unsigned int	data;
+	unsigned int	solved;
 	int				length;
 	int 			width;
 	struct s_shape	*next;
@@ -50,7 +54,8 @@ void	unload_shapes(t_shape *head);
 ** verify.c
 */
 
+int		block_count(unsigned int shape);
 t_bool	touching(t_shape *shape);
-int		block_count(int shape);
+void	trim_shape(t_shape *shape);
 
 #endif

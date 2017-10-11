@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 17:13:50 by nkouris           #+#    #+#             */
-/*   Updated: 2017/10/10 22:50:52 by nkouris          ###   ########.fr       */
+/*   Updated: 2017/10/11 12:50:48 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,25 @@ t_bool			load_file(t_shape **head, int fd)
 {
 	char	buf[21];
 	int		bytes;
+	int		n_shapes;
 	t_bool	more;
 
+	n_shapes = 0;
 	while ((bytes = read(fd, buf, 21)) == 20 || bytes == 21)
 	{
+		if (++n_shapes > 26)
+			break ;
 		more = (bytes > 20) ? TRUE : FALSE;
 		if ((more && buf[20] != '\n')
 			|| !(*head = load_shape(buf))
 			|| !touching(*head))
 			return (FALSE);
+		trim_shape(*head);
 		head = &(*head)->next;
 	}
 	if (bytes != 0 || more)
 		return (FALSE);
-	return (TRUE);
+	return (n_shapes > 0);
 }
 
 t_shape			*load_shape(char *buffer)
