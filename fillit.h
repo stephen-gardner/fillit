@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 17:14:40 by nkouris           #+#    #+#             */
-/*   Updated: 2017/10/10 22:08:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2017/10/10 22:52:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,12 @@ void	print_shapes(t_shape *shapes);
 t_bool	load_file(t_shape **head, int fd);
 t_shape	*load_shape(char *buffer);
 void	unload_shapes(t_shape *head);
+
+/*
+** verify.c
+*/
+
+t_bool	touching(t_shape *shape);
+int		block_count(int shape);
 
 #endif
