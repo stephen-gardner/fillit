@@ -6,7 +6,7 @@
 /*   By: sgardner <stephenbgardner@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 14:47:03 by sgardner          #+#    #+#             */
-/*   Updated: 2017/10/12 00:40:20 by sgardner         ###   ########.fr       */
+/*   Updated: 2017/10/12 13:12:22 by sgardner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ static void		remove_shape(t_map *map, t_shape *shape)
 	shape->loc[1] = 0;
 }
 
-static t_map	*work_map(t_map *map, t_shape *shapes)
+static t_bool	work_map(t_map *map, t_shape *shapes)
 {
 	int	row;
 	int	col;
 
 	if (!shapes)
-		return (map);
+		return (TRUE);
 	row = 0;
 	while (row < map->size)
 	{
@@ -61,14 +61,14 @@ static t_map	*work_map(t_map *map, t_shape *shapes)
 			if (place_shape(map, shapes, row, col))
 			{
 				if (work_map(map, shapes->next))
-					return (map);
+					return (TRUE);
 				remove_shape(map, shapes);
 			}
 			col++;
 		}
 		row++;
 	}
-	return (NULL);
+	return (FALSE);
 }
 
 t_map			*solve(t_shape *shapes)
@@ -77,6 +77,7 @@ t_map			*solve(t_shape *shapes)
 	t_shape	*current;
 	int		min_area;
 	int		size;
+	t_bool	solved;
 
 	current = shapes;
 	min_area = 4;
@@ -85,7 +86,13 @@ t_map			*solve(t_shape *shapes)
 	size = 2;
 	while (size * size < min_area)
 		size++;
-	while (!work_map((map = gen_map(size++)), shapes))
-		destroy_map(map);
+	solved = FALSE;
+	while (!solved)
+	{
+		if (!(map = gen_map(size++)))
+			return (NULL);
+		if (!(solved = work_map(map, shapes)))
+			destroy_map(map);
+	}
 	return (map);
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 17:14:40 by nkouris           #+#    #+#             */
-/*   Updated: 2017/10/12 02:00:55 by sgardner         ###   ########.fr       */
+/*   Updated: 2017/10/12 13:28:16 by sgardner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@
 # define FULL_BIT 0xF0000000
 # define STAGGERED_BIT 0x88880000
 
-#include <stdio.h>
-
 typedef unsigned int	t_uint;
 
-typedef	struct	s_shape
+typedef	struct			s_shape
 {
 	unsigned int	data;
 	unsigned int	masks[4];
@@ -35,44 +33,38 @@ typedef	struct	s_shape
 	int				length;
 	int				width;
 	struct s_shape	*next;
-}				t_shape;
+}						t_shape;
 
-typedef struct	s_map
+typedef struct			s_map
 {
 	unsigned int	*data;
 	int				size;
-}				t_map;
-
-/*
-** fillit.c
-*/
-
-void	print_map(t_map *map);
-void	print_shapes(t_shape *shapes);
+}						t_map;
 
 /*
 ** load.c
 */
 
-t_bool	load_file(t_shape **head, int fd);
-void	unload_shapes(t_shape *head);
+t_bool					load_file(t_shape **head, int fd);
+void					unload_shapes(t_shape *head);
 
 /*
 ** map.c
 */
 
-t_map	*gen_map(int size);
-void	destroy_map(t_map *map);
+t_map					*gen_map(int size);
+void					destroy_map(t_map *map);
+t_bool					print_map(t_map *map, t_shape *shapes);
 
 /*
 ** solve.c
 */
 
-t_map	*solve(t_shape *shapes);
+t_map					*solve(t_shape *shapes);
 
 /*
 ** verify.c
 */
 
-t_bool	is_valid(unsigned int shape);
+t_bool					is_valid(unsigned int shape);
 #endif
