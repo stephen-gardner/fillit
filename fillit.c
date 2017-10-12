@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 17:08:35 by nkouris           #+#    #+#             */
-/*   Updated: 2017/10/11 20:39:11 by sgardner         ###   ########.fr       */
+/*   Updated: 2017/10/12 02:06:02 by sgardner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_map(t_map *map)
 
 int		main(int argc, char **argv)
 {
-	int fd;
+	int		fd;
 	t_shape *shapes;
 
 	if (argc != 2)
@@ -44,10 +44,9 @@ int		main(int argc, char **argv)
 		ft_putstr(" target_file\n");
 		return (0);
 	}
-	if ((fd = open(argv[1], O_RDONLY)) == -1)
-		return (1);
 	shapes = NULL;
-	if (!(load_file(&shapes, fd))
+	if ((fd = open(argv[1], O_RDONLY)) == -1
+		|| !(load_file(&shapes, fd))
 		|| close(fd) == -1)
 	{
 		ft_putstr("error\n");

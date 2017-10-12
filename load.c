@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 17:13:50 by nkouris           #+#    #+#             */
-/*   Updated: 2017/10/11 14:37:56 by sgardner         ###   ########.fr       */
+/*   Updated: 2017/10/12 01:39:28 by sgardner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,31 @@ static void		calc_dimen(t_shape *shape)
 		shape->width++;
 }
 
-static t_shape	*load_shape(char *buffer)
+static t_bool	load_shape(t_shape **head, char *buffer)
 {
-	t_shape	*shape;
 	int		i;
 
-	if (!(shape = (t_shape *)ft_memalloc(sizeof(t_shape))))
-			return (NULL);
+	if (!(*head = (t_shape *)ft_memalloc(sizeof(t_shape))))
+		return (FALSE);
 	i = 0;
 	while (buffer[i] && i < 20)
 	{
 		if (!((i + 1) % 5))
 		{
 			if (buffer[i++] != '\n')
-				return (NULL);
+				return (FALSE);
 		}
 		else
 		{
 			if (buffer[i] != '.' && buffer[i] != '#')
-				return (NULL);
-			shape->data <<= 1;
+				return (FALSE);
+			(*head)->data <<= 1;
 			if (buffer[i++] == '#')
-				shape->data += 1;
+				(*head)->data++;
 		}
 	}
-	return ((block_count(shape->data)) ? shape : NULL);
+	(*head)->data <<= 16;
+	return (TRUE);
 }
 
 static void		trim_shape(t_shape *shape)
@@ -78,8 +78,8 @@ t_bool			load_file(t_shape **head, int fd)
 			break ;
 		more = (bytes > 20) ? TRUE : FALSE;
 		if ((more && buf[20] != '\n')
-			|| !(*head = load_shape(buf))
-			|| !touching(*head))
+			|| !load_shape(head, buf)
+			|| !is_valid((*head)->data))
 			return (FALSE);
 		trim_shape(*head);
 		calc_dimen(*head);

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 22:41:47 by nkouris           #+#    #+#             */
-/*   Updated: 2017/10/11 14:17:16 by sgardner         ###   ########.fr       */
+/*   Updated: 2017/10/12 01:50:37 by sgardner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ff(unsigned int *shape, unsigned int pos)
 {
-	if (!pos || pos < 0x8000 || !(*shape & pos))
+	if (!pos || pos < USED_BITS || !(*shape & pos))
 		return (0);
 	*shape ^= pos;
 	return (1
@@ -23,29 +23,24 @@ static int	ff(unsigned int *shape, unsigned int pos)
 			+ ff(shape, (pos >> 4)));
 }
 
-int			block_count(unsigned int shape)
+t_bool		is_valid(unsigned int shape)
 {
-	int blocks;
-
-	blocks = 0;
-	while (shape > 0)
-	{
-		if (HIGH_BIT & shape)
-			blocks++;
-		shape <<= 1;
-	}
-	return (blocks == 4);
-}
-
-t_bool		touching(t_shape *shape)
-{
-	unsigned int	data;
+	unsigned int	first_block;
+	int				n_blocks;
 	unsigned int	pos;
 
-	shape->data <<= 16;
-	data = shape->data;
+	first_block = 0;
+	n_blocks = 0;
 	pos = HIGH_BIT;
-	while (!(shape->data & pos))
+	while (pos > UNUSED_BITS)
+	{
+		if (shape & pos)
+		{
+			if (!first_block)
+				first_block = pos;
+			n_blocks++;
+		}
 		pos >>= 1;
-	return (ff(&data, pos) == 4);
+	}
+	return (n_blocks == 4 && ff(&shape, first_block) == 4);
 }
