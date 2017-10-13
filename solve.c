@@ -6,7 +6,7 @@
 /*   By: sgardner <stephenbgardner@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 14:47:03 by sgardner          #+#    #+#             */
-/*   Updated: 2017/10/12 13:12:22 by sgardner         ###   ########.fr       */
+/*   Updated: 2017/10/13 14:23:52 by sgardner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_bool	place_shape(t_map *map, t_shape *shape, int row, int col)
 	if (row + shape->length > map->size || col + shape->width > map->size)
 		return (FALSE);
 	i = 0;
-	while (i < 4)
+	while (i < shape->length)
 	{
 		shape->masks[i] = ((shape->data << (i * 4)) >> 28) << (28 - col);
 		if (shape->masks[i++] & map->data[row++])

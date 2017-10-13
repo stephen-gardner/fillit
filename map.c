@@ -6,7 +6,7 @@
 /*   By: sgardner <stephenbgardner@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 13:14:05 by sgardner          #+#    #+#             */
-/*   Updated: 2017/10/12 13:41:34 by sgardner         ###   ########.fr       */
+/*   Updated: 2017/10/13 14:15:51 by sgardner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char		*create_template(t_map *map)
 	ft_memset((void *)out, '.', out_len);
 	out[out_len] = '\0';
 	i = 0;
-	while (i <= map->size)
+	while (i < map->size)
 	{
 		out[(map->size * (i + 1)) + i] = '\n';
 		i++;
@@ -42,7 +42,7 @@ static t_bool	fill_template(char *out, t_map *map, t_shape *shapes)
 	while (shapes)
 	{
 		row = 0;
-		while (row < 4)
+		while (row < shapes->length)
 		{
 			i = ((shapes->loc[0] + row) * (map->size + 1));
 			while (shapes->masks[row] > 0)
